@@ -1,0 +1,136 @@
+/* PRELOADER START
+   Hexagon-cluster intro, pure CSS keyframes (no libraries).
+   All classes are prefixed "pl-" so they never clash with the site.
+
+   Timeline (≈5.3s)
+   0.2s  centre hex pops in        0.8s  initials fade in
+   0.6s  outer hexes fly in (1.2s each, 0.12s stagger)
+   2.1s  name fades up             2.35s divider lines grow from the diamond
+   2.5s  tagline fades in + tightens
+   4.5s  outer hexes fly out       4.9s  centre, name, tagline fade
+   5.2s  whole preloader fades (JS adds .pl-out) and is removed      */
+.pl-root {
+  --pl-bg: #0d0d14;
+  --pl-fg: #f5f5f5;
+  --pl-mute: #8f95b2;
+  /* Fonts: elegant serif for the name, clean sans for everything else */
+  --pl-font-name: 'Cormorant Garamond', Georgia, serif;
+  --pl-font-body: 'Jost', system-ui, sans-serif;
+  /* Outer hexagon colours, in order 0°, 60°, 120°, 180°, 240°, 300° */
+  --hx1: #ff595e;
+  --hx2: #ffca3a;
+  --hx3: #8ac926;
+  --hx4: #1982c4;
+  --hx5: #6a4c93;
+  --hx6: #ff924c;
+  /* Divider under the name */
+  --pl-line: rgba(245, 245, 245, 0.28);
+  --pl-diamond: #ffca3a;
+
+  /* Easings matching the design spec */
+  --back-out-2: cubic-bezier(0.34, 1.8, 0.64, 1);
+  --back-out-14: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --power3-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --power2-in: cubic-bezier(0.55, 0, 1, 0.45);
+
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2vh; padding: 0 16px;
+  background: var(--pl-bg); color: var(--pl-fg);
+  font-family: var(--pl-font-body);
+  transition: opacity 0.6s ease;
+}
+.pl-root.pl-out { opacity: 0; pointer-events: none; }
+
+/* ---- Logo ---- */
+.pl-logo { width: clamp(100px, 23vmin, 200px); max-width: 200px; height: auto; overflow: visible; }
+.pl-hx { transform-box: fill-box; transform-origin: center; }
+
+.pl-hx-center {
+  fill: var(--pl-fg);
+  animation:
+    pl-pop 0.7s var(--back-out-2) 0.2s both,
+    pl-fade-out 0.5s ease 4.9s forwards;
+}
+.pl-initials {
+  font-family: var(--pl-font-body);
+  font-size: 30px; font-weight: 600; fill: #111; letter-spacing: 1px;
+  animation:
+    pl-fade-in 0.5s ease 0.8s both,
+    pl-fade-out 0.5s ease 4.9s forwards;
+}
+.pl-hx-outer {
+  animation:
+    pl-fly-in 1.2s var(--back-out-14) calc(0.6s + var(--i) * 0.12s) both,
+    pl-fly-out 0.8s var(--power2-in) calc(4.5s + var(--i) * 0.06s) forwards;
+}
+
+/* ---- Text ---- */
+.pl-name {
+  font-family: var(--pl-font-name);
+  font-size: clamp(20px, 2.8vw, 34px); font-weight: 600;
+  letter-spacing: 0.35em; padding-left: 0.35em; /* balances trailing letter-spacing */
+  text-align: center;
+  animation:
+    pl-rise 0.9s var(--power3-out) 2.1s both,
+    pl-fade-out 0.5s ease 4.9s forwards;
+}
+.pl-tag {
+  font-size: clamp(10px, 1vw, 12px); font-weight: 400; color: var(--pl-mute);
+  text-transform: uppercase; text-align: center;
+  letter-spacing: 0.3em; padding-left: 0.3em;
+  animation:
+    pl-track 1.3s var(--power3-out) 2.5s both,
+    pl-fade-out 0.5s ease 4.9s forwards;
+}
+
+/* ---- Divider: line — ◆ — line ---- */
+.pl-divider {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: clamp(180px, 24vw, 320px);
+  animation: pl-fade-out 0.5s ease 4.9s forwards;
+}
+.pl-divider-line {
+  flex: 1; height: 1px; background: var(--pl-line);
+  transform: scaleX(0);
+  animation: pl-grow 0.8s var(--power3-out) 2.45s forwards;
+}
+.pl-divider-left { transform-origin: right; }  /* grows outward from the diamond */
+.pl-divider-right { transform-origin: left; }
+.pl-diamond {
+  width: 7px; height: 7px; flex-shrink: 0; background: var(--pl-diamond);
+  transform: rotate(45deg) scale(0);
+  animation: pl-diamond-pop 0.5s var(--back-out-2) 2.35s forwards;
+}
+
+/* ---- Skip ---- */
+.pl-skip {
+  position: absolute; top: 20px; right: 20px;
+  background: none; border: 0; color: var(--pl-mute);
+  font: inherit; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer;
+}
+.pl-skip:hover { color: #fff; }
+
+/* ---- Keyframes ---- */
+@keyframes pl-pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes pl-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pl-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes pl-fly-in {
+  from { transform: translate(var(--dx), var(--dy)) rotate(var(--spin-in)) scale(0.2); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes pl-fly-out {
+  from { transform: none; opacity: 1; }
+  to { transform: translate(var(--dx), var(--dy)) rotate(var(--spin-out)); opacity: 0; }
+}
+@keyframes pl-grow { to { transform: scaleX(1); } }
+@keyframes pl-diamond-pop { to { transform: rotate(45deg) scale(1); } }
+@keyframes pl-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes pl-track { from { opacity: 0; letter-spacing: 0.7em; } to { opacity: 1; letter-spacing: 0.3em; } }
+
+@media (prefers-reduced-motion: reduce) { .pl-root { display: none; } }
+
+/* Hold the site's entrance animations until the preloader leaves */
+body.is-preloading .fade-up,
+body.is-preloading .fade-in { animation-play-state: paused; }
+/* PRELOADER END */

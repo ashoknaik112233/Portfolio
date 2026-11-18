@@ -1,0 +1,36 @@
+/* Design tokens: colours, glass, radius — dark & light themes */
+:root {
+  --bg: #07080f;
+  --bg-2: #0d0f1c;
+  --surface: linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025));
+  --surface-2: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.12);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --glass-blur: blur(22px) saturate(170%);
+  --text: #e8eaf3;
+  --muted: #9095ab;
+  --accent-1: #7c5cff;
+  --accent-2: #22d3ee;
+  --accent-3: #f472b6;
+  --gradient: linear-gradient(120deg, var(--accent-1), var(--accent-2));
+  --shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.6);
+  --radius: 18px;
+  --nav-h: 96px;
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --bg: #f6f7fb;
+  --bg-2: #eceef6;
+  --surface: linear-gradient(135deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.4));
+  --surface-2: rgba(255, 255, 255, 0.85);
+  --border: rgba(255, 255, 255, 0.8);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --text: #12142a;
+  --muted: #5b6078;
+  --accent-1: #6246ea;
+  --accent-2: #0891b2;
+  --shadow: 0 20px 50px -25px rgba(30, 35, 90, 0.25);
+  color-scheme: light;
+}
+

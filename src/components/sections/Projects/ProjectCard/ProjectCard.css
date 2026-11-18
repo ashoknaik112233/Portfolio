@@ -1,0 +1,33 @@
+.project-card {
+  --mx: 50%; --my: 50%;
+  position: relative; overflow: hidden; padding: 2rem;
+  border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface);
+  display: flex; flex-direction: column; gap: 1.25rem;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.3s, box-shadow 0.3s;
+}
+.project-card::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.3s;
+  background: radial-gradient(400px circle at var(--mx) var(--my), rgba(124, 92, 255, 0.15), transparent 50%);
+}
+.project-card:hover::before { opacity: 1; }
+.project-card.is-visible:hover { transform: translateY(-6px); border-color: color-mix(in srgb, var(--accent-1) 60%, transparent); box-shadow: var(--shadow); }
+.project-card.featured:first-child { grid-column: 1 / -1; }
+.project-top { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
+.project-company { font-size: 0.78rem; color: var(--accent-2); }
+.project-card h3 { font-size: 1.6rem; margin-top: 0.3rem; letter-spacing: -0.01em; }
+.project-sub { color: var(--muted); font-weight: 500; }
+.project-metric {
+  text-align: right; flex-shrink: 0; padding: 0.75rem 1rem; border-radius: 14px;
+  border: 1px solid var(--border); background: var(--surface-2);
+}
+.project-metric span { display: block; font-size: 1.5rem; font-weight: 800; line-height: 1.1; }
+.project-metric small { font-size: 0.75rem; color: var(--muted); }
+.project-points { list-style: none; display: grid; gap: 0.55rem; color: var(--muted); font-size: 0.95rem; flex: 1; }
+.project-points li { position: relative; padding-left: 1.4rem; }
+.project-points li::before { content: '→'; position: absolute; left: 0; color: var(--accent-1); }
+
+@media (max-width: 640px) {
+  .project-top { flex-direction: column; }
+  .project-metric { text-align: left; }
+  .project-card { padding: 1.4rem; }
+}
